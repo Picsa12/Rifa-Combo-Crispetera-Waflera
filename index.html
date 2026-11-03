@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7c1fd6">
+  <title>Rifa combo de Crispetera + Waflera | 00–99</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍿%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">RC</span><span>Rifa Combo</span></a>
+    <button id="admin-open" class="button button-ghost" type="button">Administración</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <i class="kernel k1"></i><i class="kernel k2"></i><i class="kernel k3"></i><i class="kernel k4"></i>
+      <div class="hero-copy">
+        <p class="eyebrow">GRAN RIFA · 00 AL 99</p>
+        <h1>Rifa combo de<br><em>Crispetera<br>+ Waflera</em></h1>
+        <p class="hero-text">Escoge tus números, registra tus datos y espera la confirmación de tu pago.</p>
+        <div class="hero-meta">
+          <div><span>1 puesto</span><strong id="hero-price">$10.000 COP</strong></div>
+          <div><span>2 puestos</span><strong id="hero-price-2">$16.000 COP</strong></div>
+          <div><span>Fecha del sorteo</span><strong id="hero-date">14 de noviembre de 2026</strong></div>
+        </div>
+      </div>
+      <div class="prize-image-wrap">
+        <img id="prize-image" src="assets/crispetera.png" alt="Combo de crispetera y waflera de la rifa">
+        <div class="image-note">PREMIO: COMBO CRISPETERA + WAFLERA</div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Resumen de la rifa">
+      <div class="stat"><span>Disponibles</span><strong id="available-count">100</strong></div>
+      <div class="stat"><span>Pendientes</span><strong id="pending-count">0</strong></div>
+      <div class="stat"><span>Confirmados</span><strong id="confirmed-count">0</strong></div>
+      <div class="stat"><span>Combo 2 puestos</span><strong id="stat-price">$16.000</strong></div>
+    </section>
+
+    <section class="board-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">PARTICIPA</p><h2>Escoge tu número</h2></div>
+        <p class="section-hint">Selecciona uno o varios números disponibles.</p>
+      </div>
+      <div class="legend">
+        <span><i class="dot available"></i>Disponible</span>
+        <span><i class="dot pending"></i>Pendiente de pago</span>
+        <span><i class="dot confirmed"></i>Confirmado</span>
+        <span><i class="dot selected"></i>Tu selección</span>
+      </div>
+      <div id="number-grid" class="number-grid" aria-label="Números del 00 al 99"></div>
+      <div class="selection-bar">
+        <div><span>Tu selección</span><strong id="selection-summary">Ningún número seleccionado</strong></div>
+        <button id="register-open" class="button button-primary" type="button" disabled>Continuar registro</button>
+      </div>
+    </section>
+
+    <section class="how-it-works">
+      <h2>¿Cómo participas?</h2>
+      <div class="steps">
+        <article><b>01</b><h3>Elige</h3><p>Selecciona los números disponibles que quieras.</p></article>
+        <article><b>02</b><h3>Regístrate</h3><p>Ingresa tu nombre, apellido y celular.</p></article>
+        <article><b>03</b><h3>Realiza el pago</h3><p>Tu solicitud quedará pendiente mientras verificamos el pago.</p></article>
+        <article><b>04</b><h3>Confirma</h3><p>Cuando el administrador apruebe el pago, tus números quedarán confirmados.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>Rifa combo de Crispetera + Waflera</span><span>Consulta el estado de los números antes de registrarte.</span></footer>
+
+  <!-- Modal de registro -->
+  <dialog id="registration-modal" class="modal">
+    <form id="registration-form" class="modal-card">
+      <button class="modal-close" type="button" data-close="registration-modal" aria-label="Cerrar">×</button>
+      <p class="eyebrow">NUEVA SOLICITUD</p><h2>Completa tus datos</h2>
+      <p class="muted">Números seleccionados: <strong id="modal-numbers"></strong></p>
+      <label>Nombre<input name="first_name" autocomplete="given-name" maxlength="80" required></label>
+      <label>Apellido<input name="last_name" autocomplete="family-name" maxlength="80" required></label>
+      <label>Celular<input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Ej. 3001234567" required></label>
+      <p id="pricing-note" class="fine-print"></p>
+      <div class="total-line"><span>Total de la solicitud</span><strong id="registration-total">$0</strong></div>
+      <p class="fine-print">Al enviar, tus números quedarán en estado pendiente. El administrador verificará el pago antes de confirmarlos.</p>
+      <button class="button button-primary button-wide" type="submit">Enviar solicitud</button>
+      <p id="registration-message" class="form-message" role="status"></p>
+    </form>
+  </dialog>
+
+  <!-- Modal de detalle de número -->
+  <dialog id="number-modal" class="modal">
+    <div class="modal-card compact">
+      <button class="modal-close" type="button" data-close="number-modal" aria-label="Cerrar">×</button>
+      <p class="eyebrow">DETALLE DEL NÚMERO</p>
+      <div id="number-detail"></div>
+    </div>
+  </dialog>
+
+  <!-- Modal de administración -->
+  <dialog id="admin-modal" class="modal modal-large">
+    <div class="modal-card admin-card">
+      <button class="modal-close" type="button" data-close="admin-modal" aria-label="Cerrar">×</button>
+      <div id="admin-login-view">
+        <p class="eyebrow">ACCESO RESTRINGIDO</p><h2>Administración</h2>
+        <form id="admin-login-form">
+          <label>Correo electrónico<input name="email" type="email" autocomplete="username" required></label>
+          <label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label>
+          <button class="button button-primary button-wide" type="submit">Iniciar sesión</button>
+          <p id="login-message" class="form-message" role="status"></p>
+        </form>
+      </div>
+      <div id="admin-dashboard" hidden>
+        <div class="admin-title-row"><div><p class="eyebrow">GESTIÓN DE LA RIFA</p><h2>Panel administrativo</h2></div><button id="admin-logout" class="button button-ghost" type="button">Cerrar sesión</button></div>
+        <div class="admin-stats">
+          <div><span>Solicitudes pendientes</span><strong id="admin-pending-total">0</strong></div>
+          <div><span>Números confirmados</span><strong id="admin-confirmed-total">0</strong></div>
+          <div><span>Recaudo confirmado</span><strong id="admin-revenue">$0</strong></div>
+        </div>
+        <div class="admin-tabs"><button class="tab active" data-tab="requests" type="button">Solicitudes</button><button class="tab" data-tab="settings" type="button">Configuración</button></div>
+        <section id="tab-requests">
+          <div class="table-tools"><h3>Solicitudes pendientes</h3><button id="refresh-admin" class="button button-ghost small" type="button">Actualizar</button></div>
+          <div id="pending-list" class="request-list"><p class="muted">Cargando solicitudes…</p></div>
+          <h3 class="subheading">Historial de solicitudes</h3>
+          <div id="history-list" class="request-list"></div>
+        </section>
+        <section id="tab-settings" hidden>
+          <h3>Datos del sorteo</h3>
+          <form id="settings-form" class="settings-form">
+            <label>Nombre de la rifa<input name="title" maxlength="100" required></label>
+            <label>Premio<input name="prize" maxlength="120" required></label>
+            <label>Fecha del sorteo<input name="draw_date" type="date" required></label>
+            <label>Valor por número (COP)<input name="price" type="number" min="1" step="500" required></label>
+            <button class="button button-primary" type="submit">Guardar configuración</button>
+            <p id="settings-message" class="form-message" role="status"></p>
+          </form>
+          <p class="fine-print">El resultado ganador se determina con las dos últimas cifras del premio mayor de la Lotería de Boyacá. La publicación y validación del resultado deben realizarse manualmente.</p>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
